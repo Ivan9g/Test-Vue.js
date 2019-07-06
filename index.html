@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="app" class="container">
+	<div class="row">
+		<div class="col-sm-4 col-md-3">
+			<div class="panel">
+				<div class="panel-heading">
+					<h5 class="panel-title">
+						Фильтр
+	                </h5>
+	            </div>
+	            <div class="panel-body">
+	            	<form>
+						<div class="form-group">
+							<label for="country-select">Страна</label>
+							<select id="country-select" class="form-control" v-model="selected">
+								<option value="">Все</option>
+						  		<option v-for="result in groupedMakes">
+						  			{{ result }}
+						  		</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Тип прокси</label>
+							<div class="checkbox">
+								<input type="checkbox" value="0" id="transparent" v-model="checkedtype" />
+			        			<label for="transparent">transparent</label>
+							</div>
+							<div class="checkbox">
+								<input type="checkbox" value="1" id="anonymous" v-model="checkedtype" />
+			        			<label for="anonymous">anonymous</label>
+							</div>
+							<div class="checkbox">
+								<input type="checkbox" value="2" id="elite" v-model="checkedtype" />
+			        			<label for="elite">elite</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Действующиe</label>
+							<div class="alive">
+								<div class="checkbox">
+									<input type="checkbox" value="alive" id="alive" v-model="checkedAlive" />
+				        			<label for="alive">alive</label>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-8 col-md-9">
+			<div class="panel">
+				<div class="panel-heading">
+					<h5 class="panel-title">
+                        Список прокси
+                    </h5>
+                </div>
+                <div class="panel-body">
+        			<table class="table">
+        				<thead class="thead-dark">
+        					<tr>
+        						<th scope="col">Страна</th>
+        						<th scope="col">Адрес</th>
+        						<th scope="col">Тип прокси</th>
+        						<th scope="col">Последнее время проверки</th>
+        						<th scope="col">Рабочее состояние</th>
+        					</tr>
+        				</thead>
+        				<tbody>
+        					<tr v-for="result in filteredList" v-if="filteredList.length > 0">
+        						<td>
+        							{{ result.country }}
+        						</td>
+        						<td>
+        							{{ result.host }}
+        						</td>
+        						<td v-if="result.proxy_type == 0">
+        							transparent
+        						</td>
+        						<td v-else-if="result.proxy_type == 1">
+        							anonymous
+        						</td>
+        						<td v-else-if="result.proxy_type == 2">
+        							elite
+        						</td>
+        						<td>
+        							{{ result.last_check_time }}
+        						</td>
+        						<td>
+        							{{ result.alive }}
+        						</td>
+        					</tr>
+        					<tr v-if="filteredList.length == 0" class="null">
+        						<td colspan="5">
+        							В таблице отсутствуют данные
+        						</td>
+        					</tr>
+        				</tbody>
+        			</table>
+        		</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="app.js"></script>
+</body>
+</html>
